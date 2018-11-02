@@ -28,7 +28,7 @@ luchtvervuiling.App = function () {
     });
 
     //Get GeoJSON for all countries
-    this.names = [];
+    this.zipcodes = {};
 
     //Hide the results panel on click
     $('.results .close').click(this.hidePanel.bind(this));
@@ -97,7 +97,6 @@ luchtvervuiling.App.prototype.createMap = function () {
 luchtvervuiling.App.prototype.createRegions = function () {
     this.map.data.loadGeoJson('static/polygons/amsterdam.geojson');
     this.map.data.setStyle(function (feature) {
-        // luchtvervuiling.instance.names.append(feature.getProperty('BU_NAAM'));
         return luchtvervuiling.App.UNSELECTED_STYLE;
     });
 };
