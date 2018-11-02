@@ -30,6 +30,8 @@ luchtvervuiling.App = function () {
     //Get GeoJSON for all countries
     this.names = [];
 
+    //Hide the results panel on click
+    $('.results .close').click(this.hidePanel.bind(this));
 
     //this.addCountries(countriesMapId, countriesToken);
     this.createRegions();
@@ -37,6 +39,9 @@ luchtvervuiling.App = function () {
 
     this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('legend'));
 
+    /**
+     * Wms Overlay adding
+     */
     loadOverlay(this.map);
 
     // $.ajax({
@@ -107,6 +112,8 @@ luchtvervuiling.App.prototype.handleMapClick = function (event) {
     console.log('Buurt: ' + name);
     this.map.data.revertStyle();
     this.map.data.overrideStyle(feature, luchtvervuiling.App.SELECTED_STYLE);
+    $('.results .buurtnaam').html(name);
+    $('.results').show();
 };
 
 
@@ -177,6 +184,13 @@ luchtvervuiling.App.prototype.validateShapefile = function () {
         }
     }).bind(this));
 
+};
+
+/**
+ * Hides results panel
+ */
+luchtvervuiling.App.prototype.hidePanel = function () {
+    $('.results').hide();
 };
 
 

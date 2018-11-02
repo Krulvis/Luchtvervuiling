@@ -41,6 +41,8 @@ body,
 
 .futurewater .results {
     display: none;
+    top: 100px;
+    right: 50px;
 }
 
 .futurewater .results .error {
