@@ -193,8 +193,8 @@ luchtvervuiling.App.OVERLAY_BASE_BUTTON_NAME = 'Create Overlay';
 
 luchtvervuiling.App.GRAPH_BASE_BUTTON_NAME = 'Create Graph';
 
-luchtvervuiling.App.DEFAULT_CENTER = {lng: 96.95112549402336, lat: 18.00746449851361};
-luchtvervuiling.App.DEFAULT_ZOOM = 6;
+luchtvervuiling.App.DEFAULT_CENTER = {lng: 5.87326968978482, lat: 51.95821862116816};
+luchtvervuiling.App.DEFAULT_ZOOM = 7;
 luchtvervuiling.App.MAX_ZOOM = 14;
 
 luchtvervuiling.App.CHIRPS_CLIMATE = 'UCSB-CHG/CHIRPS/DAILY';
