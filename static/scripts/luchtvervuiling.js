@@ -44,17 +44,6 @@ luchtvervuiling.App = function () {
     //this.addCountries(countriesMapId, countriesToken);
     this.createRegions();
 
-    //Adds a marker for given input
-    $('.add-marker').on('click', regions.addMarkerFromForm.bind(this));
-
-    $('#download-csv-btn').click(function () {
-        var csvFormattedDataTable = luchtvervuiling.App.graphToCSV(luchtvervuiling.instance.chartData);
-        var encodedUri = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvFormattedDataTable);
-        this.href = encodedUri;
-        this.download = 'table-data.csv';
-        this.target = '_blank';
-    });
-
     this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('legend'));
 };
 
@@ -62,17 +51,8 @@ luchtvervuiling.App = function () {
  * Set the initial Values to use
  */
 luchtvervuiling.App.prototype.initVals = function () {
-    this.targetRegion = null;
-    this.selectedCountry = null;
-    this.markers = [];
-    this.selectionMethod = 'country';
-    this.selectionType = 'graph';
-    this.chartData = null;
-    this.chartTitle = 'Chart';
-    timesteps.resetRadios(this.selectionType);
-    statistics.resetRadios(this.selectionType);
-    products.resetRadios(this.selectionType);
 
+    this.chartData = null;
 };
 
 /**
@@ -119,8 +99,6 @@ luchtvervuiling.App.prototype.createDistricts = function () {
 };
 
 
-
-
 /**
  * Adds overlay to the map with given mapId and token,
  * Fires event on done loading map
@@ -162,8 +140,6 @@ luchtvervuiling.App.prototype.clearOverlays = function () {
 };
 
 
-
-
 /**
  * Validates the given shapefile link
  */
@@ -191,7 +167,6 @@ luchtvervuiling.App.prototype.validateShapefile = function () {
     }).bind(this));
 
 };
-
 
 
 luchtvervuiling.App.format = function (value) {
