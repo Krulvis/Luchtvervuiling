@@ -35,6 +35,7 @@
 
     <!-- Our custom JavaScript for Earth Engine App. -->
     <script src="/static/scripts/luchtvervuiling.js"></script>
+    <script src="/static/scripts/wms.js"></script>
 
 
 </head>
@@ -76,18 +77,17 @@
     <!-- A container which the Maps API will populate with a map. -->
     <div class="map"></div>
 
-    <div class="settings panel container">
+
+    <div class="settings panel">
         <h5>Legenda</h5>
         <hr>
-        <div class="legenda">
-
-
+        <div class="wmsLegend">
         </div>
     </div>
 
     <!-- The panel to show details about a place. -->
     <div class="results panel">
-
+        <h1 class="buurtnaam">Buurt</h1>
         <!-- The button to toggle the panel expanded/collapsed. Mobile-only. -->
         <div class="toggler">toggle</div>
 

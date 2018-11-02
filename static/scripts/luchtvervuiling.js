@@ -9,7 +9,6 @@ luchtvervuiling.boot = function (key) {
         google.charts.load("current", {packages: ['corechart']});
         google.charts.setOnLoadCallback(function () {
             luchtvervuiling.instance = new luchtvervuiling.App();
-            luchtvervuiling.instance.initVals();
         });
 
     });
@@ -29,31 +28,46 @@ luchtvervuiling.App = function () {
     });
 
     //Get GeoJSON for all countries
-    var names = [];
-    $.getJSON('static/polygons/myanmar_state_region_boundaries.json', function (json) {
-        json.features.forEach(function (feature) {
-            names.push(feature.properties.ST);
-        });
-    });
-    $.getJSON('static/polygons/myanmar_district_boundaries.json', function (json) {
-        json.features.forEach(function (feature) {
-            names.push(feature.properties.ST);
-        });
-    });
+    this.names = [];
+
+    //Hide the results panel on click
+    $('.results .close').click(this.hidePanel.bind(this));
 
     //this.addCountries(countriesMapId, countriesToken);
     this.createRegions();
+    this.map.data.addListener('click', this.handleMapClick.bind(this));
 
     this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('legend'));
+
+    /**
+     * Wms Overlay adding
+     */
+    loadOverlay(this.map);
+
+    // $.ajax({
+    //     url: '/overlay',
+    //     method: 'GET',
+    //     beforeSend: function () {
+    //         console.log('Loading map overlay...');
+    //     },
+    //     error: function (data) {
+    //         console.log('Error obtaining data!');
+    //     }
+    // }).done((function (data) {
+    //     if (data['error']) {
+    //         console.log('Error: ' + data['error']);
+    //     } else {
+    //         var mapId = data['mapid'];
+    //         var token = data['token'];
+    //         // $('#legend-max span').html(myanmar.App.format(data['max']));
+    //         // $('#legend-min span').html(myanmar.App.format(data['min']));
+    //         // var legend = $('#legend');
+    //         // legend.show();
+    //         this.addOverlay(mapId, token);
+    //     }
+    // }).bind(this));
 };
 
-/**
- * Set the initial Values to use
- */
-luchtvervuiling.App.prototype.initVals = function () {
-
-    this.chartData = null;
-};
 
 /**
  * Creates a Google Map
@@ -81,21 +95,25 @@ luchtvervuiling.App.prototype.createMap = function () {
  * Loads the JSON as GeoJSON to the map's data, letting each Region become a feature
  */
 luchtvervuiling.App.prototype.createRegions = function () {
-    this.map.data.loadGeoJson('static/polygons/myanmar_state_region_boundaries.json');
+    this.map.data.loadGeoJson('static/polygons/amsterdam.geojson');
     this.map.data.setStyle(function (feature) {
+        // luchtvervuiling.instance.names.append(feature.getProperty('BU_NAAM'));
         return luchtvervuiling.App.UNSELECTED_STYLE;
     });
 };
 
 /**
- * Retrieves the JSON data for each District
- * Loads the JSON as GeoJSON to the map's data, letting each District become a feature
+ * Handle Map Click (Select Buurt)
+ * @param event
  */
-luchtvervuiling.App.prototype.createDistricts = function () {
-    this.map.data.loadGeoJson('static/polygons/myanmar_districts_boundaries.json');
-    this.map.data.setStyle(function (feature) {
-        return luchtvervuiling.App.UNSELECTED_STYLE;
-    });
+luchtvervuiling.App.prototype.handleMapClick = function (event) {
+    var feature = event.feature;
+    var name = feature.getProperty('BU_NAAM');
+    console.log('Buurt: ' + name);
+    this.map.data.revertStyle();
+    this.map.data.overrideStyle(feature, luchtvervuiling.App.SELECTED_STYLE);
+    $('.results .buurtnaam').html(name);
+    $('.results').show();
 };
 
 
@@ -168,6 +186,13 @@ luchtvervuiling.App.prototype.validateShapefile = function () {
 
 };
 
+/**
+ * Hides results panel
+ */
+luchtvervuiling.App.prototype.hidePanel = function () {
+    $('.results').hide();
+};
+
 
 luchtvervuiling.App.format = function (value) {
     return parseFloat(Math.round(value * 100.0) / 100.0).toFixed(2);
@@ -175,12 +200,12 @@ luchtvervuiling.App.format = function (value) {
 
 luchtvervuiling.App.EE_URL = 'https://earthengine.googleapis.com';
 
-luchtvervuiling.App.SELECTED_STYLE = {strokeWeight: 4};
+luchtvervuiling.App.SELECTED_STYLE = {strokeWeight: 2};
 
 luchtvervuiling.App.UNSELECTED_STYLE = {
     fillOpacity: 0.0,
     strokeColor: 'black',
-    strokeWeight: 1
+    strokeWeight: 0.3
 };
 
 luchtvervuiling.App.INACTIVE_STYLE = {
@@ -193,8 +218,8 @@ luchtvervuiling.App.OVERLAY_BASE_BUTTON_NAME = 'Create Overlay';
 
 luchtvervuiling.App.GRAPH_BASE_BUTTON_NAME = 'Create Graph';
 
-luchtvervuiling.App.DEFAULT_CENTER = {lng: 5.87326968978482, lat: 51.95821862116816};
-luchtvervuiling.App.DEFAULT_ZOOM = 7;
+luchtvervuiling.App.DEFAULT_CENTER = {lng: 4.893985568630569, lat: 52.375142184470015};
+luchtvervuiling.App.DEFAULT_ZOOM = 13;
 luchtvervuiling.App.MAX_ZOOM = 14;
 
 luchtvervuiling.App.CHIRPS_CLIMATE = 'UCSB-CHG/CHIRPS/DAILY';
