@@ -86,31 +86,19 @@ class MainHandler(webapp2.RequestHandler):
         template_values = {
             'key': config.KEY
         }
+        template = JINJA2_ENVIRONMENT.get_template('/static/home.html')
+        self.response.out.write(template.render(template_values))
+
+
+class Map(webapp2.RequestHandler):
+    """A servlet to handle requests to load the main web page."""
+
+    def get(self):
+        """Returns the main web page, populated with EE map."""
+        template_values = {
+            'key': config.KEY
+        }
         template = JINJA2_ENVIRONMENT.get_template('index.html')
-        self.response.out.write(template.render(template_values))
-
-
-class MapNL(webapp2.RequestHandler):
-    """A servlet to handle requests to load the main web page."""
-
-    def get(self):
-        """Returns the main web page, populated with EE map."""
-        template_values = {
-            'key': config.KEY
-        }
-        template = JINJA2_ENVIRONMENT.get_template('/static/MapNL.html')
-        self.response.out.write(template.render(template_values))
-
-
-class MapEng(webapp2.RequestHandler):
-    """A servlet to handle requests to load the main web page."""
-
-    def get(self):
-        """Returns the main web page, populated with EE map."""
-        template_values = {
-            'key': config.KEY
-        }
-        template = JINJA2_ENVIRONMENT.get_template('/static/MapEng.html')
         self.response.out.write(template.render(template_values))
 
 
@@ -151,8 +139,7 @@ class SFHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/overlay', OverlayHandler),
     ('/shapefile', SFHandler),
-    ('/NL/map', MapNL),
-    ('/Eng/Map', MapEng),
+    ('/map', Map),
     ('/', MainHandler),
 ])
 
