@@ -89,6 +89,18 @@ class MainHandler(webapp2.RequestHandler):
         template = JINJA2_ENVIRONMENT.get_template('index.html')
         self.response.out.write(template.render(template_values))
 
+class HomeHandler(webapp2.RequestHandler):
+    """A servlet to handle requests to load the main web page."""
+
+    def get(self):
+        """Returns the main web page, populated with EE map."""
+        template_values = {
+            'key': config.KEY
+        }
+        template = JINJA2_ENVIRONMENT.get_template('index.html')
+        self.response.out.write(template.render(template_values))
+
+
 
 class OverlayHandler(webapp2.RequestHandler):
 
@@ -183,6 +195,7 @@ app = webapp2.WSGIApplication([
     ('/graph', GraphHandler),
     ('/test', TestHandler),
     ('/shapefile', SFHandler),
+    ('/home', HomeHandler),
     ('/', MainHandler),
 ])
 
