@@ -41,8 +41,8 @@
 </head>
 <body>
 <!-- The DOM of our application. -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Navbar w/ text</a>
+<nav style="background-color: #e4e3e0; height: 50px;" class="navbar navbar-expand-lg navbar-light" >
+    <a class="navbar-brand" href="#"><img src="../static/img/logo.svg" width="50" height="50" alt=""> Product name</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -52,7 +52,7 @@
                 <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" href="#">Kaart</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Pricing</a>
@@ -77,8 +77,12 @@
     <!-- A container which the Maps API will populate with a map. -->
     <div class="map"></div>
 
+
     <div class="settings panel">
-        <div class="wmsLegend"></div>
+        <h5>Legenda</h5>
+        <hr>
+        <div class="wmsLegend">
+        </div>
     </div>
 
     <!-- The panel to show details about a place. -->
