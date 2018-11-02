@@ -27,11 +27,12 @@ body,
 }
 
 .futurewater .settings {
-    top: 100px;
+    top: 170px;
+    left: 50px;
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 90%;
-    max-width: 600px;
+    width: 290px;
     font-size: 14px;
 }
 
@@ -45,5 +46,9 @@ body,
 
 .futurewater .results .error {
     display: none;
+}
+.cleardata {
+    padding: 0px;
+    border-top: 0px;
 }
 
