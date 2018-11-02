@@ -184,12 +184,12 @@ luchtvervuiling.App.format = function (value) {
 
 luchtvervuiling.App.EE_URL = 'https://earthengine.googleapis.com';
 
-luchtvervuiling.App.SELECTED_STYLE = {strokeWeight: 4};
+luchtvervuiling.App.SELECTED_STYLE = {strokeWeight: 2};
 
 luchtvervuiling.App.UNSELECTED_STYLE = {
     fillOpacity: 0.0,
     strokeColor: 'black',
-    strokeWeight: 1
+    strokeWeight: 0.3
 };
 
 luchtvervuiling.App.INACTIVE_STYLE = {
