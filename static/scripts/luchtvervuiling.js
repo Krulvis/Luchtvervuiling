@@ -37,28 +37,30 @@ luchtvervuiling.App = function () {
 
     this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(document.getElementById('legend'));
 
-    $.ajax({
-        url: '/overlay',
-        method: 'GET',
-        beforeSend: function () {
-            console.log('Loading map overlay...');
-        },
-        error: function (data) {
-            console.log('Error obtaining data!');
-        }
-    }).done((function (data) {
-        if (data['error']) {
-            console.log('Error: ' + data['error']);
-        } else {
-            var mapId = data['mapid'];
-            var token = data['token'];
-            // $('#legend-max span').html(myanmar.App.format(data['max']));
-            // $('#legend-min span').html(myanmar.App.format(data['min']));
-            // var legend = $('#legend');
-            // legend.show();
-            this.addOverlay(mapId, token);
-        }
-    }).bind(this));
+    loadOverlay(this.map);
+
+    // $.ajax({
+    //     url: '/overlay',
+    //     method: 'GET',
+    //     beforeSend: function () {
+    //         console.log('Loading map overlay...');
+    //     },
+    //     error: function (data) {
+    //         console.log('Error obtaining data!');
+    //     }
+    // }).done((function (data) {
+    //     if (data['error']) {
+    //         console.log('Error: ' + data['error']);
+    //     } else {
+    //         var mapId = data['mapid'];
+    //         var token = data['token'];
+    //         // $('#legend-max span').html(myanmar.App.format(data['max']));
+    //         // $('#legend-min span').html(myanmar.App.format(data['min']));
+    //         // var legend = $('#legend');
+    //         // legend.show();
+    //         this.addOverlay(mapId, token);
+    //     }
+    // }).bind(this));
 };
 
 
