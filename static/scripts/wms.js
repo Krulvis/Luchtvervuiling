@@ -83,12 +83,11 @@ MercatorProjection.prototype.fromDivPixelToSphericalMercator = function (pixel, 
     return new google.maps.Point(x, y);
 };
 
-function loadOverlay(map) {
+function loadOverlay(map, layerName) {
     console.log('Adding overlay');
     var wms_root_url = 'http://geodata.rivm.nl/geoserver/wms';
     var day = 'vandaag';
     var time = '18';
-    var layerName = 'lki';
     var layerString = 'lucht:' + day + '_' + layerName;
     var legendParams = '?request=GetLegendGraphic&format=image/png&width=20&height=20&layer=';
     var legendURL = wms_root_url + legendParams + 'lucht:actueel_' + layerName;
