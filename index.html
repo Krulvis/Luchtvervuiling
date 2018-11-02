@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Myanmar Rain Application</title>
+    <meta charset="utf-8">
+
+    <link rel="shortcut icon" href="/static/img/icon.png">
+
+    <!-- Support for browsers on mobile phones. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!-- Google Web Fonts. -->
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed'
+          rel='stylesheet' type='text/css'>
+
+    <!-- The Google JavaScript loader tool (for the Maps, Charts APIs). -->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <!-- JQuery CSS/JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- Bootstrap CSS/JS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
+          integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+    <!-- Custom CSS styles for our application. -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/thumbnails.css">
+    <link rel="stylesheet" href="/static/css/header.css">
+
+    <!-- Our custom JavaScript for Earth Engine App. -->
+    <script src="/static/scripts/markers.js"></script>
+    <script src="/static/scripts/regions.js"></script>
+    <script src="/static/scripts/products.js"></script>
+    <script src="/static/scripts/statistics.js"></script>
+    <script src="/static/scripts/timesteps.js"></script>
+    <script src="/static/scripts/myanmar.js"></script>
+    <script src="/static/scripts/inputFile.js"></script>
+
+</head>
+<body>
+<!-- The title of the application. -->
+<div class="header-container row">
+    <div class="advertisement col-md-3">
+        <span class="helper"></span>
+        <a href="https://www.futurewater.eu/"><img class="logo" src="/static/img/logo.png"></a>
+    </div>
+    <div class="col-md-5">
+        <div class="page-header row">
+            <div class="raincloud-logo col-md-6">
+                <span class="helper"></span>
+                <img class="raincloud" src="/static/img/raincloud.png">
+            </div>
+            <div class="app-title col-md-6">
+                <h1>RainCloud App</h1>
+            </div>
+        </div>
+    </div>
+    <div class="extra col-md-4 row">
+        <div class="col-md-9">
+            <div id="information" class="collapse ">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </div>
+        </div>
+        <div class="buttons col-md-3">
+            <div class="contact"><a href="https://www.futurewater.eu/about-us/contact-2/"><i
+                    class="far fa-envelope"></i> Contact</a></div>
+            <div class="information" data-toggle="collapse"
+                 data-target="#information"><i class="fas fa-info-circle"></i> Information
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The DOM of our application. -->
+<div class="futurewater">
+    <!-- A container which the Maps API will populate with a map. -->
+    <div class="map"></div>
+
+    <div class="settings panel">
+        <form class="settings-form">
+            <!-- DATES SELECTION -->
+            <div class="dates row">
+                <div class="col-lg form-group">
+                    <label class="bold" for="startDate">Start Date</label>
+                    <input type="date" class="form-control datepicker" id="startDate" value="2017-01-01">
+                </div>
+                <div class="col-lg form-group">
+                    <label class="bold" for="endDate">End Date</label>
+                    <input type="date" class="form-control datepicker" id="endDate" value="2018-01-01">
+                </div>
+            </div>
+
+            <!-- STYLE SELECTION -->
+            <div class="method-container">
+                <ul class="nav nav-tabs nav-justified">
+                    <li class="nav-item"><a class="nav-link active show" data-toggle="tab" href="#country"><i
+                            class="fas fa-globe-americas fa-lg fa-pull-left"></i>Country</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#region"><i
+                            class="fas fa-file fa-lg fa-pull-left"></i>Region</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#shapefile"><i
+                            class="fas fa-file fa-lg fa-pull-left"></i>Shapefile</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#coordinate"><i
+                            class="fas fa-map-marker-alt fa-lg fa-pull-left"></i>Coordinate</a>
+                    </li>
+                </ul>
+                <div class="method-content tab-content">
+                    <!-- Country Options -->
+                    <div id="country" class="tab-pane fade in active show">
+
+                    </div>
+                    <div id="region" class="tab-pane fade in active">
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" id="region-field" placeholder="Region name">
+                            </div>
+                        </div>
+                        <div class="form-group regions-table table-responsive table-sm">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Remove</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- ShapeFile Options -->
+                    <div id="shapefile" class="tab-pane fade">
+                        <div class="input-group input-file" hidden>
+                            <input type="text" class="form-control" placeholder='Choose a file...'/>
+                            <span class="input-group-btn">
+                                <button class="btn btn-default btn-choose" type="button">Choose</button>
+                            </span>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="shapefile-link"
+                                       placeholder="Shapefile link: users/****/****">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success check-shapefile" onclick="return false;">
+                                    <i class="fas fa-check fa-lg validated-shapefile"></i> Validate Shapefile
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Markers Options-->
+                    <div id="coordinate" class="tab-pane fade">
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="lat" placeholder="Latitude">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="lng" placeholder="Longitude">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" id="title" placeholder="Title">
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-success add-marker" onclick="return false;">Add Marker</button>
+                            </div>
+                        </div>
+                        <div class="form-group markers-table table-responsive table-sm">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Lat</th>
+                                    <th>Lng</th>
+                                    <th>Title</th>
+                                    <th>Remove</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p id="error-message"></p>
+            <!-- Data Buttons -->
+            <div class="create-buttons pull-down">
+                <ul class="nav nav-tabs nav-justified">
+                    <li class="nav-item"><a id="graph-tab" class="nav-link active show" data-toggle="tab" href="#graph"><i
+                            class="fas fa-chart-area fa-lg fa-pull-left"></i>Graph</a></li>
+                    <li class="nav-item"><a id="overlay-tab" class="nav-link" data-toggle="tab" href="#overlay"><i
+                            class="fas fa-map fa-lg fa-pull-left"></i>Overlay</a></li>
+                </ul>
+                <div class="create-options">
+
+                </div>
+                <div class="tab-content">
+                    <!-- Country Options -->
+                    <div id="graph" class="tab-pane fade in active show">
+                        <button class="btn btn-success form-control" onclick="return false;" id="graph-button">Create
+                            Graph
+                        </button>
+                    </div>
+                    <div id="overlay" class="tab-pane fade">
+                        <button class="btn btn-success form-control" onclick="return false;" id="overlay-button">Create
+                            Overlay
+                        </button>
+                    </div>
+                </div>
+                <div class="download download-img">
+                    <a target="_blank" class="btn btn-success btn-block form-control" id="download-img-btn"
+                       style="color:inherit;">
+                        <i class="far fa-save fa-lg"></i> Download Image
+                    </a>
+                </div>
+                <div class="download download-csv">
+                    <a target="_blank" class="btn btn-success btn-block form-control" id="download-csv-btn"
+                       style="color:inherit;">
+                        <i class="far fa-save fa-lg"></i> Download CSV
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- The panel to show details about a place. -->
+    <div class="results panel">
+
+        <!-- The button to toggle the panel expanded/collapsed. Mobile-only. -->
+        <div class="toggler">toggle</div>
+
+        <!-- The button to close the panel. Desktop-only. -->
+        <div class="close">close</div>
+
+        <!-- The title of the place for which details are being shown. -->
+        <h2 class="title"></h2>
+
+        <!-- A scrollable container for details about the polygon. -->
+        <div class="details">
+
+            <!-- A container which the Charts API will populate. -->
+            <div class="chart"></div>
+
+            <!-- The element to hold the error message. -->
+            <p class="error"></p>
+            <!-- The element to download the chart data as CSV. -->
+        </div>
+    </div>
+</div>
+<div class="ui-widget top-center top center positioned ui-panel" id="legend"
+     style="margin-top: 10px; background-color: white; z-index:2;">
+    <div class="ui-layout layout-flow layout-flow-vertical" style="padding:8px;">
+        <div class="ui-widget stretch-horizontal ui-panel" style="margin: 0px; background-color: white;">
+            <div class="ui-layout layout-flow layout-flow-horizontal">
+                <div class="ui-widget ui-label" style="margin: 8px; background-color: white;">
+                    <span class="label">0</span>
+                </div>
+                <div class="ui-widget stretch-horizontal ui-label"
+                     style="margin: 8px; background-color: white;">
+                    <span class="label" style="width:100%; text-align: center;">Precipitation (mm)</span>
+                </div>
+                <div class="ui-widget ui-label" id="legend-max" style="margin: 8px; background-color: white;">
+                    <span class="label">300</span>
+                </div>
+            </div>
+        </div>
+        <div class="ui-widget bottom-center bottom center positioned ui-thumbnail"
+             style="background-color: white; padding: 1px;">
+            <img src="/static/img/legend.png">
+        </div>
+    </div>
+</div>
+<!-- Boot our JavaScript once the body has loaded. -->
+<script>
+    myanmar.boot(
+        '{{ key | safe }}');
+
+</script>
+
+
+</body>
+</html>
