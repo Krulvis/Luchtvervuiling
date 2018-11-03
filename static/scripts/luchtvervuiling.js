@@ -27,8 +27,11 @@ luchtvervuiling.App = function () {
         luchtvervuiling.instance.showChart();
     });
 
+    this.layer = 'lki';
+
     $(".dropdown-menu a").click(function () {
         var id = $(this).attr('id');
+        luchtvervuiling.instance.layer = id;
         $(".btn:first-child").text($(this).text());
         $(".btn:first-child").val($(this).text());
         loadOverlay(luchtvervuiling.instance.map, id);
@@ -50,30 +53,7 @@ luchtvervuiling.App = function () {
     /**
      * Wms Overlay adding
      */
-    loadOverlay(this.map, 'lki');
-
-    // $.ajax({
-    //     url: '/overlay',
-    //     method: 'GET',
-    //     beforeSend: function () {
-    //         console.log('Loading map overlay...');
-    //     },
-    //     error: function (data) {
-    //         console.log('Error obtaining data!');
-    //     }
-    // }).done((function (data) {
-    //     if (data['error']) {
-    //         console.log('Error: ' + data['error']);
-    //     } else {
-    //         var mapId = data['mapid'];
-    //         var token = data['token'];
-    //         // $('#legend-max span').html(myanmar.App.format(data['max']));
-    //         // $('#legend-min span').html(myanmar.App.format(data['min']));
-    //         // var legend = $('#legend');
-    //         // legend.show();
-    //         this.addOverlay(mapId, token);
-    //     }
-    // }).bind(this));
+    loadOverlay(this.map, this.layer);
 };
 
 
@@ -116,13 +96,13 @@ luchtvervuiling.App.prototype.createRegions = function () {
 luchtvervuiling.App.prototype.handleMapClick = function (event) {
     var feature = event.feature;
     var name = feature.getProperty('BU_NAAM');
-    console.log('Buurt: ' + name);
+    var layer = this.layer;
+    console.log('Buurt: ' + name, ', layer: ' + layer);
     this.map.data.revertStyle();
     this.map.data.overrideStyle(feature, luchtvervuiling.App.SELECTED_STYLE);
 
-
     $.ajax({
-        url: '/buurt?buurt=' + name,
+        url: '/buurt?buurt=' + name + '&layer=' + layer,
         method: 'GET',
         beforeSend: function () {
             $('.results .buurtnaam').html(name);
@@ -142,80 +122,38 @@ luchtvervuiling.App.prototype.handleMapClick = function (event) {
             // $('#legend-min span').html(myanmar.App.format(data['min']));
             // var legend = $('#legend');
             // legend.show();
-            this.addOverlay(mapId, token);
+
         }
     }).bind(this));
 };
 
-
 /**
- * Adds overlay to the map with given mapId and token,
- * Fires event on done loading map
- * @param eeMapId
- * @param eeToken
- * @param statistic
+ * Shows a chart with the given timeseries.
+ * @param {Array<Array<number>>} timeseries The timeseries data
+ *     to plot in the chart.
  */
-luchtvervuiling.App.prototype.addOverlay = function (eeMapId, eeToken) {
-    console.log('MapID: ' + eeMapId + ', Token: ' + eeToken);
-    //var bounds = new google.maps.LatLngBounds();
-    var maxZoom = 5;
-    var overlay = new google.maps.ImageMapType({
-        getTileUrl: function (tile, zoom) {
-            var url = luchtvervuiling.App.EE_URL + '/map/';
-            maxZoom = zoom > maxZoom ? zoom : maxZoom;
-            url += [eeMapId, zoom, tile.x, tile.y].join('/');
-            url += '?token=' + eeToken;
-            return url;
-        },
-        tileSize: new google.maps.Size(256, 256)
+luchtvervuiling.App.prototype.showChart = function (chartTitle, chartData) {
+    $('.results').show();
+    $('.results .title').show().text(chartTitle);
+    var data = google.visualization.arrayToDataTable(chartData);
+    var wrapper = new google.visualization.ChartWrapper({
+        chartType: 'LineChart',
+        dataTable: data,
+        options: {
+            title: 'Precipitation over time',
+            //curveType: 'function',
+            legend: {position: 'bottom'},
+            titleTextStyle: {fontName: 'Roboto'},
+            hAxis: {title: 'Time'},
+            vAxis: {title: 'Precipitation (mm)'}
+        }
     });
-
-    this.map.overlayMapTypes.push(overlay);
-    //this.map.fitBounds(bounds);
-    //this.map.setZoom(maxZoom);
-
+    $('.results .chart').show();
+    var chartEl = $('.chart').get(0);
+    wrapper.setContainerId(chartEl);
+    wrapper.draw();
 };
 
-
-/**
- * Removes previously added Overlay Map Types (Used to remove Map Overlay Rainfall)
- */
-luchtvervuiling.App.prototype.clearOverlays = function () {
-    var overlays = this.map.overlayMapTypes;
-    while (overlays[0]) {
-        overlays.pop().setMap(null);
-    }
-    this.map.overlayMapTypes.clear();
-};
-
-
-/**
- * Validates the given shapefile link
- */
-luchtvervuiling.App.prototype.validateShapefile = function () {
-    var link = $('#shapefile-link').val();
-    console.log('Validating: ' + link);
-    $.ajax({
-        url: '/shapefile?link=' + link,
-        method: 'GET',
-        beforeSend: function () {
-            $('.validated-shapefile').hide();
-        }, error: function (data) {
-            error.show().html(data['error']);
-        }
-    }).done((function (data) {
-        console.log(data);
-        console.log(data['success']);
-        if (data['error']) {
-            error.show().html(data['error']);
-        } else if (data['success'] === 'true') {
-            console.log('Validated Shapefile!');
-            $('.validated-shapefile').show();
-            //this.addOverlay(data['mapId'], data['token']);
-        }
-    }).bind(this));
-
-};
 
 /**
  * Hides results panel
