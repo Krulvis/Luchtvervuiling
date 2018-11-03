@@ -82,11 +82,30 @@
     <div class="settings panel">
         <h5>Layers</h5>
         <hr>
-        <form action="">
-            <input type="checkbox" name="layer1" value="" checked> layer 1<br>
-            <input type="checkbox" name="layer2" value=""> layer 2<br>
-            <input type="checkbox" name="layer3" value=""> layer 3<br><br>
-        </form>
+
+        <script> $(function(){
+
+            $(".dropdown-menu a").click(function(){
+
+                $(".btn:first-child").text($(this).text());
+                $(".btn:first-child").val($(this).text());
+
+            });
+
+        });</script>
+
+        <div class="dropdown">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Luchtkwaliteitsindex
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Luchtkwaliteitsindex</a>
+                <a class="dropdown-item" href="#">Fijnstof</a>
+                <a class="dropdown-item" href="#">No2</a>
+                <a class="dropdown-item" href="#">No3</a>
+            </div>
+        </div>
+        <br />
         <h5>Legenda</h5>
         <hr>
         <div class="wmsLegend">
