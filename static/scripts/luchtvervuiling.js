@@ -117,22 +117,12 @@ luchtvervuiling.App.prototype.handleMapClick = function (event) {
             console.log('Error obtaining data!');
         }
     }).done((function (data) {
-        var buurtInfo = json.parse(data).filter(function (i, n) {
+        var buurtInfo = $.grep(data, function (n, i) {
             return n.buurt_code === code;
         });
         console.log(buurtInfo);
-    }).bind(this));
-};
 
-luchtvervuiling.App.prototype.getWoz = function (buurtnaam) {
-    $.ajax({
-        type: "GET",
-        url: "woz.csv",
-        dataType: "text",
-        success: function (data) {
-            processData(data);
-        }
-    });
+    }).bind(this));
 };
 
 luchtvervuiling.App.prototype.processData = function (allText) {
