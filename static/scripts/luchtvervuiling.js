@@ -99,7 +99,7 @@ luchtvervuiling.App.prototype.handleMapClick = function (event) {
     var name = feature.getProperty('BU_NAAM');
     var code = feature.getProperty('BU_CODE');
     var layer = this.layer;
-    console.log('Buurt: ' + name, ', layer: ' + layer);
+    console.log('Buurt: ' + name, ', layer: ' + layer + ', code: ' + code);
     this.map.data.revertStyle();
     this.map.data.overrideStyle(feature, luchtvervuiling.App.SELECTED_STYLE);
 
@@ -117,11 +117,7 @@ luchtvervuiling.App.prototype.handleMapClick = function (event) {
             console.log('Error obtaining data!');
         }
     }).done((function (data) {
-        var buurtInfo = $.grep(data, function (n, i) {
-            return n.buurt_code === code;
-        });
-        console.log(buurtInfo);
-
+        $('#wozwaarde').val('189.683 euro');
     }).bind(this));
 };
 
