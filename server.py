@@ -150,9 +150,9 @@ class BuurtHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/overlay', OverlayHandler),
     ('/shapefile', SFHandler),
-    ('/map', Map),
+    ('/', Map),
     ('/buurt', BuurtHandler),
-    ('/', MainHandler),
+    ('/map', MainHandler),
 ])
 
 
