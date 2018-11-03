@@ -4,6 +4,11 @@
     display: none;
 }
 
+@font-face {
+    font-family: "Aileron";
+    src: url('../font/Aileron-Bold.otf');
+}
+
 /* Shared across all screen sizes. */
 
 html,
