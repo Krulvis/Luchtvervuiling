@@ -83,29 +83,19 @@
         <h5>Layers</h5>
         <hr>
 
-        <script> $(function(){
-
-            $(".dropdown-menu a").click(function(){
-
-                $(".btn:first-child").text($(this).text());
-                $(".btn:first-child").val($(this).text());
-
-            });
-
-        });</script>
-
         <div class="dropdown">
-            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
                 Luchtkwaliteitsindex
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item" href="#">Luchtkwaliteitsindex</a>
-                <a class="dropdown-item" href="#">Fijnstof</a>
+                <a class="dropdown-item" id="pm10" href="#">Fijnstof</a>
                 <a class="dropdown-item" href="#">No2</a>
-                <a class="dropdown-item" href="#">No3</a>
+                <a class="dropdown-item" href="#">O3</a>
             </div>
         </div>
-        <br />
+        <br/>
         <h5>Legenda</h5>
         <hr>
         <div class="wmsLegend">
@@ -115,9 +105,8 @@
     <!-- The panel to show details about a place. -->
     <div class="results panel">
         <h1 class="buurtnaam">Buurt</h1>
-        <!-- The button to toggle the panel expanded/collapsed. Mobile-only. -->
-        <div class="toggler">toggle</div>
 
+        <img class="loading hidden" src="/static/img/loading.gif">
         <!-- The button to close the panel. Desktop-only. -->
         <div class="close">close</div>
 

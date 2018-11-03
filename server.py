@@ -135,11 +135,23 @@ class SFHandler(webapp2.RequestHandler):
         self.response.out.write(json.dumps(data))
 
 
+class BuurtHandler(webapp2.RequestHandler):
+
+    def get(self):
+        buurt = self.request.get('buurt')
+        print('Looking for: ', buurt)
+        data = {}
+        data['success'] = 'true'
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.out.write(json.dumps(data))
+
+
 # http://webapp-improved.appspot.com/tutorials/quickstart.html
 app = webapp2.WSGIApplication([
     ('/overlay', OverlayHandler),
     ('/shapefile', SFHandler),
     ('/map', Map),
+    ('/buurt', BuurtHandler),
     ('/', MainHandler),
 ])
 
@@ -150,7 +162,8 @@ app = webapp2.WSGIApplication([
 
 def GetOverlayImage():
     """Map for displaying summed up images of specified measurement"""
-    return BUURT_OVERLAY.clip(NETHERLANDS).visualize(min=-2, max=11, opacity=0.4, palette='0020C5, 009CF9, 2DCDFB, FFFC4D, FF9845, FE7626, FF0A17, DC0610')
+    return BUURT_OVERLAY.clip(NETHERLANDS).visualize(min=-2, max=11, opacity=0.4,
+                                                     palette='0020C5, 009CF9, 2DCDFB, FFFC4D, FF9845, FE7626, FF0A17, DC0610')
 
 
 ###############################################################################

@@ -27,6 +27,13 @@ luchtvervuiling.App = function () {
         luchtvervuiling.instance.showChart();
     });
 
+    $(".dropdown-menu a").click(function () {
+        $(".btn:first-child").text($(this).text());
+        $(".btn:first-child").val($(this).text());
+
+    });
+
+
     //Get GeoJSON for all countries
     this.zipcodes = {};
 
@@ -111,8 +118,32 @@ luchtvervuiling.App.prototype.handleMapClick = function (event) {
     console.log('Buurt: ' + name);
     this.map.data.revertStyle();
     this.map.data.overrideStyle(feature, luchtvervuiling.App.SELECTED_STYLE);
-    $('.results .buurtnaam').html(name);
-    $('.results').show();
+
+
+    $.ajax({
+        url: '/buurt?buurt=' + name,
+        method: 'GET',
+        beforeSend: function () {
+            $('.results .buurtnaam').html(name);
+            $('.results .loading').show();
+            $('.results').show();
+        },
+        error: function (data) {
+            console.log('Error obtaining data!');
+        }
+    }).done((function (data) {
+        if (data['error']) {
+            console.log('Error: ' + data['error']);
+        } else {
+            var mapId = data['mapid'];
+            var token = data['token'];
+            // $('#legend-max span').html(myanmar.App.format(data['max']));
+            // $('#legend-min span').html(myanmar.App.format(data['min']));
+            // var legend = $('#legend');
+            // legend.show();
+            this.addOverlay(mapId, token);
+        }
+    }).bind(this));
 };
 
 

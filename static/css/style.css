@@ -43,12 +43,20 @@ body,
 .futurewater .results {
     display: none;
     top: 100px;
-    right: 50px;
+    left: 250px;
+}
+
+.futurewater .loading {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 .futurewater .results .error {
     display: none;
 }
+
 .cleardata {
     padding: 0px;
     border-top: 0px;
