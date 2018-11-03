@@ -42,7 +42,7 @@ luchtvervuiling.App = function () {
     /**
      * Wms Overlay adding
      */
-    loadOverlay(this.map);
+    loadOverlay(this.map, 'lki');
 
     // $.ajax({
     //     url: '/overlay',
