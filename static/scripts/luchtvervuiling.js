@@ -28,9 +28,10 @@ luchtvervuiling.App = function () {
     });
 
     $(".dropdown-menu a").click(function () {
+        var id = $(this).attr('id');
         $(".btn:first-child").text($(this).text());
         $(".btn:first-child").val($(this).text());
-
+        loadOverlay(luchtvervuiling.instance.map, id);
     });
 
 
