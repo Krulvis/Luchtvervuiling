@@ -6,6 +6,7 @@ httplib2/
 oauth2client/
 pyasn1
 pyasn1_modules
+django-pandas/
 rsa
 .idea
 *.iml

@@ -38,6 +38,7 @@ BuildDep () {
 
 # Build oauth2client v2.2.0 dependencies.
 BuildDep six 1.10.0 six.py
+BuildDep django-pandas 0.5.1 django-pandas
 BuildDep pyasn1 0.1.9 pyasn1
 BuildDep pyasn1-modules 0.0.8 pyasn1_modules
 BuildDep rsa 3.4.2 rsa

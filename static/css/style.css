@@ -47,10 +47,15 @@ body,
 }
 
 .futurewater .loading {
-    display: block;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+}
+
+.futurewater .chart {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
 .futurewater .results .error {

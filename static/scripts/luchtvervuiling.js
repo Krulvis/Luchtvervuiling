@@ -20,7 +20,7 @@ luchtvervuiling.App = function () {
     //Some styling (responsiveness of results panel)
     var results = $('.results');
     var settings = $('.settings');
-    results.draggable().resizable();
+    results.draggable();//.resizable();
     settings.draggable();
     results.on('resizestop', function () {
         console.log('Resize complete');
@@ -34,6 +34,7 @@ luchtvervuiling.App = function () {
         luchtvervuiling.instance.layer = id;
         $(".btn:first-child").text($(this).text());
         $(".btn:first-child").val($(this).text());
+        $('.results .chart').attr('src', '/static/img/' + id + '.png');
         loadOverlay(luchtvervuiling.instance.map, id);
     });
 
@@ -96,35 +97,60 @@ luchtvervuiling.App.prototype.createRegions = function () {
 luchtvervuiling.App.prototype.handleMapClick = function (event) {
     var feature = event.feature;
     var name = feature.getProperty('BU_NAAM');
+    var code = feature.getProperty('BU_CODE');
     var layer = this.layer;
     console.log('Buurt: ' + name, ', layer: ' + layer);
     this.map.data.revertStyle();
     this.map.data.overrideStyle(feature, luchtvervuiling.App.SELECTED_STYLE);
 
     $.ajax({
-        url: '/buurt?buurt=' + name + '&layer=' + layer,
+        url: '/static/dataset.json',
         method: 'GET',
         beforeSend: function () {
             $('.results .buurtnaam').html(name);
-            $('.results .loading').show();
+            //$('.results .loading').show();
             $('.results').show();
+            $('.results .chart').attr('src', '/static/img/' + layer + '.png');
+            $('.results .chart').show();
         },
         error: function (data) {
             console.log('Error obtaining data!');
         }
     }).done((function (data) {
-        if (data['error']) {
-            console.log('Error: ' + data['error']);
-        } else {
-            var mapId = data['mapid'];
-            var token = data['token'];
-            // $('#legend-max span').html(myanmar.App.format(data['max']));
-            // $('#legend-min span').html(myanmar.App.format(data['min']));
-            // var legend = $('#legend');
-            // legend.show();
-
-        }
+        var buurtInfo = json.parse(data).filter(function (i, n) {
+            return n.buurt_code === code;
+        });
+        console.log(buurtInfo);
     }).bind(this));
+};
+
+luchtvervuiling.App.prototype.getWoz = function (buurtnaam) {
+    $.ajax({
+        type: "GET",
+        url: "woz.csv",
+        dataType: "text",
+        success: function (data) {
+            processData(data);
+        }
+    });
+};
+
+luchtvervuiling.App.prototype.processData = function (allText) {
+    var allTextLines = allText.split(/\r\n|\n/);
+    var headers = allTextLines[0].split(',');
+    var lines = [];
+
+    for (var i = 1; i < allTextLines.length; i++) {
+        var data = allTextLines[i].split(',');
+        if (data.length == headers.length) {
+            var tarr = [];
+            for (var j = 0; j < headers.length; j++) {
+                tarr.push(headers[j] + ":" + data[j]);
+            }
+            lines.push(tarr);
+        }
+    }
+    console.log(lines);
 };
 
 /**

@@ -63,10 +63,8 @@ import json
 import os
 import sys
 from httplib import HTTPException
-
 import jinja2
 import webapp2
-from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 
 import config
@@ -76,7 +74,6 @@ import ee
 ###############################################################################
 #                             Web request handlers.                           #
 ###############################################################################
-
 
 class MainHandler(webapp2.RequestHandler):
     """A servlet to handle requests to load the main web page."""
@@ -139,8 +136,12 @@ class BuurtHandler(webapp2.RequestHandler):
 
     def get(self):
         buurt = self.request.get('buurt')
-        print('Looking for: ', buurt)
+        particle = self.request.get('particle')
+        print('Looking for:', buurt, ', particle:', particle)
         data = {}
+        graph = (0, 1)  # buurtNaam(buurt, particle)
+        data['time'] = graph[0]
+        data['y'] = graph[1]
         data['success'] = 'true'
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(data))
@@ -169,7 +170,6 @@ def GetOverlayImage():
 ###############################################################################
 #                                   Helpers.                                  #
 ###############################################################################
-
 
 def GetShapeFileFeature(shapefile):
     return ee.FeatureCollection(shapefile).geometry().dissolve()
